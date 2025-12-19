@@ -1,1 +1,95 @@
+Week 1 — Phase 1: System Planning & Distribution Selection (Ubuntu vs Fedora)
+═══════════════════════════════════════════════════════
+SYSTEM ARCHITECTURE DIAGRAM
+[Leave space - insert a diagram image later]
+Must show: Workstation -> SSH -> Server VM (headless), plus NAT + Host-only network.
+═══════════════════════════════════════════════════════
+DISTRIBUTION SELECTION JUSTIFICATION
+Chosen server distro (pick one for the actual coursework server): ________________________________
+Alternative compared against: Ubuntu 24.04 LTS vs Fedora Server (version: ________)
+Comparison prompts (fill with evidence):
+- Package manager: apt vs dnf
+- Default MAC: AppArmor vs SELinux
+- Default firewall tooling: UFW vs firewalld
+- Update cadence / stability: LTS vs faster release
+- Default running services (evidence from systemctl)
+My final decision and why: ________________________________
+═══════════════════════════════════════════════════════
+WORKSTATION CONFIGURATION DECISION
+Option chosen (A host + SSH / B Linux desktop VM / C hybrid): ________________________________
+Why this satisfies the SSH-only administration constraint: ________________________________
+═══════════════════════════════════════════════════════
+NETWORK CONFIGURATION DOCUMENTATION
+VirtualBox adapters for server VM: Adapter1 NAT, Adapter2 Host-only (vboxnet0)
+Host-only network: 192.168.56.0/24 (DHCP OFF)
+Server host-only IP: 192.168.56.10/24
+Workstation host-only IP (if Linux VM/WSL): 192.168.56.20/24
+Connectivity tests evidence: ping + SSH
+ping -c 4 192.168.56.10
+ssh kuval@192.168.56.10
+[SCREENSHOT HERE]
+═══════════════════════════════════════════════════════
+SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
+SERVER:
+uname -a
+[PASTE]
+free -h
+[PASTE]
+df -h
+[PASTE]
+ip addr
+[PASTE]
+lsb_release -a OR cat /etc/os-release
+[PASTE]
+What this tells me: ____________________
+WORKSTATION:
+uname -a (or WSL uname)
+[PASTE]
+free -h
+[PASTE]
+df -h
+[PASTE]
+ip addr
+[PASTE]
+lsb_release -a OR cat /etc/os-release
+[PASTE]
+What this tells me: ____________________
+═══════════════════════════════════════════════════════
+UBUNTU vs FEDORA EXPLORATION EVIDENCE (Lab link)
+Ubuntu:
+apt --version
+systemctl list-units --type=service --state=running | head
+ls -l /
+[SCREENSHOT HERE]
+
+Fedora:
+dnf --version
+systemctl list-units --type=service --state=running | head
+ls -l /
+[SCREENSHOT HERE]
+═══════════════════════════════════════════════════════
+MONITORING TOOLS (Lab) — install/run and note observations (idle, updates, file copy).
+Ubuntu:
+sudo apt install htop iotop nmon -y
+htop
+sudo iotop -o
+nmon
+[SCREENSHOTS HERE]
+
+Fedora:
+sudo dnf install htop iotop nmon -y
+htop
+sudo iotop -o
+nmon
+[SCREENSHOTS HERE]
+═══════════════════════════════════════════════════════
+CHALLENGES ENCOUNTERED + FIXES
+Problem: ____________________  Cause: ____________________  Fix: ____________________
+═══════════════════════════════════════════════════════
+COMPLETION CHECKLIST
+□ Architecture diagram added
+□ Ubuntu vs Fedora comparison completed with evidence
+□ Host-only network configured + static IPs + SSH works
+□ CLI specs captured for server + workstation
+□ Week 1 committed to GitHub Pages
 
