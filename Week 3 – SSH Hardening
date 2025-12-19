@@ -1,1 +1,27 @@
+Week 3 — Phase 3: Application Selection for Performance Testing
+═══════════════════════════════════════════════════════
+APPLICATION SELECTION MATRIX (you fill)
+Workload types to cover: CPU, Memory, Disk I/O, Network, Server/response time.
+Apps you might use: stress/stress-ng, dd, iperf3, apache/httpd + ab, scp transfer tests.
+═══════════════════════════════════════════════════════
+INSTALLATION COMMANDS (server via SSH) — paste exact commands you ran
+Ubuntu example:
+sudo apt update
+sudo apt install stress sysstat iotop iperf3 apache2 -y
+[PASTE YOUR EXACT COMMANDS + SCREENSHOT]
+
+Fedora example:
+sudo dnf install stress-ng sysstat iotop iperf3 httpd -y
+[IF YOU TESTED ON FEDORA, DOCUMENT IT]
+═══════════════════════════════════════════════════════
+EXPECTED RESOURCE PROFILES (write predictions before testing)
+- CPU app expected: ____________________
+- Memory app expected: __________________
+- I/O app expected: _____________________
+- Network app expected: __________________
+- Server app expected: ___________________
+═══════════════════════════════════════════════════════
+MONITORING STRATEGY PER APP
+What metrics will you record for each app and how will you capture evidence?
+═══════════════════════════════════════════════════════
 
