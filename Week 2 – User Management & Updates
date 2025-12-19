@@ -1,1 +1,23 @@
+Week 2 — Phase 2: Security Planning & Performance Testing Methodology
+═══════════════════════════════════════════════════════
+PERFORMANCE TESTING PLAN (remote methodology)
+How will you collect metrics remotely over SSH? What tools, how often, and what tables will you fill?
+Tools planned: top/htop, free, vmstat, iostat, iotop, ss, ping, iperf3, ab, journalctl/logs
+═══════════════════════════════════════════════════════
+SECURITY CONFIGURATION CHECKLIST (plan)
+□ SSH hardening (keys, disable password, no root login)
+□ Firewall (allow SSH only from workstation IP)
+□ MAC (AppArmor on Ubuntu / SELinux on Fedora)
+□ Automatic security updates
+□ fail2ban
+□ User privilege management
+□ Network isolation (host-only)
+═══════════════════════════════════════════════════════
+THREAT MODEL (minimum 3) — fill with your own threats + mitigations
+Threat 1: ____________________  Mitigation: ____________________
+Threat 2: ____________________  Mitigation: ____________________
+Threat 3: ____________________  Mitigation: ____________________
+═══════════════════════════════════════════════════════
+REFLECTION
+Security vs performance/usability trade-offs you anticipate: ________________________________
 
