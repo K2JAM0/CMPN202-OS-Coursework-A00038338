@@ -1,1 +1,37 @@
+Week 7 — Phase 7: Security Audit (Lynis + nmap) & System Evaluation
+═══════════════════════════════════════════════════════
+LYNIS AUDIT (Before/After)
+sudo apt install lynis -y
+sudo lynis audit system
+# Save log:
+sudo cp /var/log/lynis.log ~/lynis-before.log
+[SCREENSHOT: hardening index]
+═══════════════════════════════════════════════════════
+NMAP SCAN (workstation -> server, host-only network only)
+sudo apt install nmap -y
+nmap 192.168.56.10
+nmap -sV 192.168.56.10
+[SCREENSHOTS + port inventory table]
+═══════════════════════════════════════════════════════
+SERVICE INVENTORY + JUSTIFICATION
+sudo ss -tulnp
+systemctl list-units --type=service --state=running
+[SCREENSHOT]
+Create table: service, port, why needed, security measures.
+═══════════════════════════════════════════════════════
+HARDENING ACTIONS (based on Lynis warnings)
+Change 1: ____________________ Evidence before/after: ____________________
+Change 2: ____________________ Evidence before/after: ____________________
+═══════════════════════════════════════════════════════
+LYNIS AUDIT (After) + COMPARISON
+sudo lynis audit system
+sudo cp /var/log/lynis.log ~/lynis-after.log
+grep 'Hardening index' ~/lynis-before.log
+grep 'Hardening index' ~/lynis-after.log
+[SCREENSHOT: improved score]
+═══════════════════════════════════════════════════════
+REMAINING RISKS + RATIONALE
+Risk 1: ____________________  Why accepted: ____________________
+Risk 2: ____________________  Why accepted: ____________________
+═══════════════════════════════════════════════════════
 
