@@ -1,1 +1,62 @@
+Week 6 — Phase 6: Performance Testing + File Systems + Network + Optimisation + Trade-offs
+═══════════════════════════════════════════════════════
+FILE SYSTEM EXPLORATION (Lab)
+ls -l /
+ls -l /etc
+ls -l /var
+ls -l /home
+sudo apt install tree -y
+tree -L 2 /etc
+stat /etc/passwd
+[SCREENSHOTS + your explanations]
+═══════════════════════════════════════════════════════
+STORAGE PERFORMANCE (Lab)
+sudo apt install sysstat iotop -y
+iostat -x 2 5
+sudo iotop -o
+# dd tests:
+dd if=/dev/zero of=testfile bs=1M count=1024 oflag=direct
+sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'
+dd if=testfile of=/dev/null bs=1M count=1024
+rm testfile
+[SCREENSHOTS + record MB/s]
+═══════════════════════════════════════════════════════
+NETWORK CONFIG + PERFORMANCE (Lab)
+ip addr show
+ip route show
+ss -tuln
+ping -c 10 192.168.56.10
+# iperf3:
+# Server: iperf3 -s
+# Workstation: iperf3 -c 192.168.56.10 -t 30
+[SCREENSHOTS + tables]
+═══════════════════════════════════════════════════════
+BASELINE PERFORMANCE TABLE (server idle)
+[Fill: CPU, memory, disk I/O, load average, connections, latency]
+═══════════════════════════════════════════════════════
+APPLICATION LOAD TESTING (Phase 6) — repeat per application
+For each app: command, monitoring evidence, results table.
+═══════════════════════════════════════════════════════
+OPTIMISATION LOG (Week 12 content embedded here) — at least TWO optimisations
+Optimisation #1 (CPU/memory/disk/network): ____________________
+Before config + metrics: ____________________
+Commands used: ____________________
+After config + metrics: ____________________
+Improvement %: ____________________
+Trade-offs: ____________________
+═══════════════════════════════════════════════════════
+TRADE-OFF ANALYSIS (minimum 6 with quantitative data)
+Trade-off #1: ____________________ (include numbers)
+Trade-off #2: ____________________ (include numbers)
+Trade-off #3: ____________________ (include numbers)
+Trade-off #4: ____________________ (include numbers)
+Trade-off #5: ____________________ (include numbers)
+Trade-off #6: ____________________ (include numbers)
+═══════════════════════════════════════════════════════
+VISUALISATIONS (minimum 3 charts)
+□ CPU bar chart
+□ Memory bar chart
+□ Disk I/O chart
+Optional: network throughput/latency chart, trade-off chart
+═══════════════════════════════════════════════════════
 
