@@ -1,1 +1,47 @@
+Week 4 — Phase 4: Initial Security Implementation (SSH, Firewall, Users)
+═══════════════════════════════════════════════════════
+ADMIN CONSTRAINT: all server configuration must be done via SSH from workstation.
+═══════════════════════════════════════════════════════
+SSH KEY SETUP (workstation)
+ssh-keygen -t ed25519 -C "A00038338"
+ssh-copy-id kuval@192.168.56.10
+ssh kuval@192.168.56.10
+[SCREENSHOT: passwordless login + username@hostname]
+═══════════════════════════════════════════════════════
+SSH HARDENING (server) — before/after evidence
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+sudo nano /etc/ssh/sshd_config
+# Set:
+PasswordAuthentication no
+PubkeyAuthentication yes
+PermitRootLogin no
+sudo systemctl restart ssh
+sudo systemctl status ssh --no-pager
+[SCREENSHOTS: config BEFORE/AFTER + service status]
+═══════════════════════════════════════════════════════
+FIREWALL (server) — restrict SSH to workstation IP only
+Ubuntu (UFW) example:
+sudo apt install ufw -y
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow from 192.168.56.20 to any port 22 proto tcp
+sudo ufw enable
+sudo ufw status numbered
+[SCREENSHOT HERE]
+Fedora note (if you used Fedora for server): firewalld commands go here.
+═══════════════════════════════════════════════════════
+USER & PRIVILEGE MANAGEMENT
+sudo adduser osadmin
+sudo usermod -aG sudo osadmin
+id osadmin
+getent group sudo
+[SCREENSHOT HERE]
+Explain least privilege: ____________________
+═══════════════════════════════════════════════════════
+REMOTE ADMIN EVIDENCE (run from workstation)
+ssh kuval@192.168.56.10 'uname -a'
+ssh kuval@192.168.56.10 'free -h'
+ssh kuval@192.168.56.10 'sudo ufw status'
+[SCREENSHOT showing remote commands]
+═══════════════════════════════════════════════════════
 
