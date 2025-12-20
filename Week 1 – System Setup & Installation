@@ -31,20 +31,62 @@ ssh kuval@192.168.56.10
 ═══════════════════════════════════════════════════════
 SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
 SERVER:
+
 ![SSH login successful](images/week1/ssh-login.png)
 *Figure 1: Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
 
 uname -a
-[PASTE]
+
+Linux ubuntu-server 6.8.0-90-generic #91-Ubuntu SMP PREEMPT_DYNAMIC Tue Nov 18 14:14:30 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+
 free -h
-[PASTE]
+              total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       326Mi       1.5Gi       1.0Mi       201Mi       1.6Gi
+Swap:          2.0Gi          0B       2.0Gi]
+
 df -h
-[PASTE]
+
+[Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              197M  1.1M  196M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   14G  4.6G  8.5G  35% /
+tmpfs                              984M     0  984M   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/sda2                          2.0G  100M  1.7G   6% /boot
+tmpfs                              197M   12K  197M   1% /run/user/1000
+
 ip addr
-[PASTE]
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:33:4d:9c brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 metric 100 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft 84722sec preferred_lft 84722sec
+    inet6 fd17:625c:f037:2:a00:27ff:fe33:4d9c/64 scope global dynamic mngtmpaddr noprefixroute
+       valid_lft 86237sec preferred_lft 14237sec
+    inet6 fe80::a00:27ff:fe33:4d9c/64 scope link
+       valid_lft forever preferred_lft forever
+
+What this tells me:
+The server has a functioning network interface (enp0s3) using NAT with a dynamically assigned IPv4 address, confirming network connectivity required for SSH administration.
+
+
 lsb_release -a OR cat /etc/os-release
-[PASTE]
-What this tells me: ____________________
+
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 24.04.3 LTS
+Release:        24.04
+Codename:       noble
+
+What this tells me:
+The system is running Ubuntu Server 24.04.3 LTS (Noble), confirming a long-term support release suitable for a stable and secure server environment.
+
 WORKSTATION:
 uname -a (or WSL uname)
 [PASTE]
