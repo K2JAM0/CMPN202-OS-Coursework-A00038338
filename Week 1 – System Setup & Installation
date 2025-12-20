@@ -31,6 +31,9 @@ ssh kuval@192.168.56.10
 ═══════════════════════════════════════════════════════
 SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
 SERVER:
+![Ubuntu Server login prompt](../images/week1/week1-login-prompt.png)
+*Figure 1: Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
+
 uname -a
 [PASTE]
 free -h
