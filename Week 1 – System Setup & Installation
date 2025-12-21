@@ -5,20 +5,42 @@ SYSTEM ARCHITECTURE DIAGRAM
 Must show: Workstation -> SSH -> Server VM (headless), plus NAT + Host-only network.
 ═══════════════════════════════════════════════════════
 DISTRIBUTION SELECTION JUSTIFICATION
-Chosen server distro (pick one for the actual coursework server): ________________________________
-Alternative compared against: Ubuntu 24.04 LTS vs Fedora Server (version: ________)
+Chosen server distro: Ubuntu Server 24.04.3 LTS
+Alternative compared against: Fedora server 43
 Comparison prompts (fill with evidence):
-- Package manager: apt vs dnf
-- Default MAC: AppArmor vs SELinux
-- Default firewall tooling: UFW vs firewalld
-- Update cadence / stability: LTS vs faster release
-- Default running services (evidence from systemctl)
-My final decision and why: ________________________________
+- Package manager:
+Ubuntu uses apt, which is widely documented and stable for LTS environments.
+Fedora uses dnf, which supports newer packages but updates more frequently.
+
+- Default MAC:
+Ubuntu uses AppArmor by default, which provides profile-based mandatory access control.
+Fedora uses SELinux in enforcing mode by default, offering fine-grained MAC at the cost of higher complexity.
+
+- Default firewall tooling:
+Ubuntu uses UFW as a simplified frontend to iptables/nftables.
+Fedora uses firewalld with zone-based configuration.
+
+- Update cadence / stability:
+Ubuntu LTS prioritises long-term stability and predictable updates.
+Fedora follows a rapid release model with newer kernels and packages.
+
+- Default running services: Verified using systemctl list-units --type=service --state=running on both systems.
+
+My final decision and why:
+Ubuntu Server 24.04 LTS was selected as the primary server platform
+due to its long-term support lifecycle predictable updates, extensive documentation, 
+and simpler security management using AppArmor,
+making it more suitable for a stable academic server environment.
+
 ═══════════════════════════════════════════════════════
 WORKSTATION CONFIGURATION DECISION
-Option chosen (A host + SSH / B Linux desktop VM / C hybrid): ________________________________
-Why this satisfies the SSH-only administration constraint: ________________________________
-═══════════════════════════════════════════════════════
+Option chosen (A host + SSH / B Linux desktop VM / C hybrid): B — Linux workstation VM (Fedora Server)
+
+Why this satisfies the SSH-only administration constraint: 
+All administration of the Ubuntu server was performed remotely over SSH from a separate Fedora workstation VM.
+The Ubuntu server remained headless with no graphical environment installed, enforcing secure remote administration.
+
+
 NETWORK CONFIGURATION DOCUMENTATION
 
 VirtualBox adapters for server VM: Adapter1 NAT, Adapter2 Host-only (vboxnet0)
