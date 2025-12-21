@@ -129,7 +129,10 @@ nmon
 [SCREENSHOTS HERE]
 ═══════════════════════════════════════════════════════
 CHALLENGES ENCOUNTERED + FIXES
-Problem: ____________________  Cause: ____________________  Fix: ____________________
+Problem: Netplan produced a permissions warning when applying static IP configuration.  
+Cause: The netplan YAML file had overly permissive file permissions. 
+Fix: Corrected file permissions using `chmod 600` and re-applied netplan successfully.
+
 ═══════════════════════════════════════════════════════
 COMPLETION CHECKLIST
 □ Architecture diagram added
