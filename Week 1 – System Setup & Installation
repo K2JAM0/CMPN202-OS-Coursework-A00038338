@@ -133,6 +133,8 @@ Problem: Netplan produced a permissions warning when applying static IP configur
 Cause: The netplan YAML file had overly permissive file permissions. 
 Fix: Corrected file permissions using `chmod 600` and re-applied netplan successfully.
 
+![Netplan permissions warning](images/week1/netplan-permissions-warning.png)
+
 ═══════════════════════════════════════════════════════
 COMPLETION CHECKLIST
 □ Architecture diagram added
