@@ -48,6 +48,10 @@ VirtualBox adapters for server VM: Adapter1 NAT, Adapter2 Host-only (vboxnet0)
 Host-only network: 192.168.56.0/24 (DHCP OFF)
 Server host-only IP: 192.168.56.10/24
 Workstation host-only IP (if Linux VM/WSL): 192.168.56.20/24
+
+![Fedora workstation static IP](images/week1/fedora-enp0s8-static-ip.png)
+*Figure : Fedora workstation host-only interface (enp0s8) configured with static IP 192.168.56.20/24, enabling controlled SSH administration of the Ubuntu server.*
+
 Connectivity tests evidence: ping + SSH
 ping -c 4 192.168.56.10
 ssh kuval@192.168.56.10
