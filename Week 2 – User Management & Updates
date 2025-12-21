@@ -41,6 +41,22 @@ SECURITY CONFIGURATION CHECKLIST (plan)
 *Figure 1: SSH server configuration on Ubuntu with root login and password authentication disabled, enforcing key-based remote access only.*
 
 □ Firewall: allow SSH only from workstation IP (192.168.56.20), default deny inbound
+
+sudo ufw status verbose
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    192.168.56.20
+
+The Ubuntu server firewall (UFW) was configured to deny all incoming connections 
+by default, allowing SSH access only from the Fedora workstation (192.168.56.20).
+
+
+
 □ MAC: Ubuntu AppArmor (verify status), Fedora SELinux enforcing (verify with sestatus)
 □ Automatic security updates: enable unattended upgrades (Ubuntu)
 □ fail2ban: protect SSH logins
