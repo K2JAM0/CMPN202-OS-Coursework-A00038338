@@ -35,7 +35,7 @@ making it more suitable for a stable academic server environment.
 
 ═══════════════════════════════════════════════════════
 WORKSTATION CONFIGURATION DECISION
-Option chosen (A host + SSH / B Linux desktop VM / C hybrid): B — Linux workstation VM (Fedora Server)
+Option chosen (A host + SSH / B Linux desktop VM / C hybrid): B — Linux workstation VM (Fedora 43 Server, CLI)
 
 Why this satisfies the SSH-only administration constraint: 
 All administration of the Ubuntu server was performed remotely over SSH from a separate Fedora workstation VM.
@@ -44,7 +44,7 @@ The Ubuntu server remained headless with no graphical environment installed, enf
 
 NETWORK CONFIGURATION DOCUMENTATION
 
-VirtualBox adapters for server VM: Adapter1 NAT, Adapter2 Host-only (vboxnet0)
+VirtualBox adapters for server VM: Adapter1 NAT, Adapter2 Host-only (VirtualBox Host-Only Ethernet Adapter)
 Host-only network: 192.168.56.0/24 (DHCP OFF)
 Server host-only IP: 192.168.56.10/24
 Workstation host-only IP (if Linux VM/WSL): 192.168.56.20/24
@@ -58,6 +58,9 @@ ssh kuval@192.168.56.10
 
 ![Static IP applied](images/week1/static-ip-applied.png)
 *Figure : Host-only network interface configured with static IP 192.168.56.10/24, confirming correct VirtualBox host-only networking.*
+
+![SSH success from Fedora workstation to Ubuntu server](images/week1/week1-ssh-success-fedora-to-ubuntu.png)
+*Figure : Successful SSH connection from Fedora workstation (192.168.56.20) to Ubuntu server (192.168.56.10), confirming host-only networking and remote administration over SSH.*
 
 ═══════════════════════════════════════════════════════
 SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
@@ -107,7 +110,7 @@ What this tells me:
 The server has a functioning network interface (enp0s3) using NAT with a dynamically assigned IPv4 address, confirming network connectivity required for SSH administration.
 
 
-lsb_release -a OR cat /etc/os-release
+cat /etc/os-release
 
 No LSB modules are available.
 Distributor ID: Ubuntu
@@ -119,17 +122,44 @@ What this tells me:
 The system is running Ubuntu Server 24.04.3 LTS (Noble), confirming a long-term support release suitable for a stable and secure server environment.
 
 WORKSTATION:
-uname -a (or WSL uname)
-[PASTE]
+uname -a 
+Linux localhost.localdomain 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+
 free -h
-[PASTE]
+total        used        free      shared  buff/cache   available
+Mem:            1.9Gi       320Mi       1.4Gi        8Mi       210Mi       1.6Gi
+Swap:           2.0Gi          0B       2.0Gi
+
 df -h
-[PASTE]
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/fedora-root             14G  4.2G  8.7G  33% /
+tmpfs                              980M     0  980M   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/sda2                          2.0G  150M  1.7G   8% /boot
+tmpfs                              196M   12K  196M   1% /run/user/1000
+
 ip addr
-[PASTE]
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.56.20/24 brd 192.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+
 lsb_release -a OR cat /etc/os-release
-[PASTE]
-What this tells me: ____________________
+NAME="Fedora Linux"
+VERSION="43 (Server Edition)"
+ID=fedora
+VERSION_ID=43
+PRETTY_NAME="Fedora Linux 43 (Server Edition)"
+
+What this tells me: This confirms the workstation runs Fedora Server 43 with kernel 6.17.1.
+It uses dnf5 for package management, has 1.9 GiB RAM and a 2 GiB swap partition.
+The host-only interface enp0s8 (192.168.56.20/24) connects securely to the Ubuntu server (192.168.56.10) over SSH, while enp0s3 handles external connectivity via NAT.
+The system is correctly configured for remote administration of the Ubuntu headless server.
 ═══════════════════════════════════════════════════════
 UBUNTU vs FEDORA EXPLORATION EVIDENCE (Lab link)
 Ubuntu:
@@ -153,21 +183,6 @@ ls -l /
 ![Fedora SELinux enforcing and running services](images/week1/fedora-selinux-services.png)
 *Figure : SELinux confirmed enforcing with `sestatus`, and sample of active services using `systemctl list-units` on Fedora.*
 ═══════════════════════════════════════════════════════
-MONITORING TOOLS (Lab) — install/run and note observations (idle, updates, file copy).
-Ubuntu:
-sudo apt install htop iotop nmon -y
-htop
-sudo iotop -o
-nmon
-[SCREENSHOTS HERE]
-
-Fedora:
-sudo dnf install htop iotop nmon -y
-htop
-sudo iotop -o
-nmon
-[SCREENSHOTS HERE]
-═══════════════════════════════════════════════════════
 CHALLENGES ENCOUNTERED + FIXES
 
 Problem: Netplan produced a permissions warning when applying static IP configuration.  
@@ -176,9 +191,11 @@ Fix: File permissions were restricted using `chmod 600`, after which netplan app
 
 ![Netplan permissions fixed](images/week1/netplan-permissions-fixed.png)
 
-![Ping failed before host-only network was corrected](images/week1/fedora-ping-ubuntu-failed.png)
-*Figure X: Initial ping from Fedora workstation to Ubuntu server failed (“Destination Host Unreachable”), indicating host-only network/IP mismatch before correction.*
-
+Problem: Fedora workstation could not reach Ubuntu server over host-only network (Destination Host Unreachable).
+Evidence: ping -c 4 192.168.56.10 failed from Fedora.
+Cause: Host-only networking/IP config mismatch (Fedora host-only adapter/interface not on the expected 192.168.56.0/24, or the host-only adapter wasn’t correctly attached/active).
+Fix: Confirmed both VMs had Adapter 2 = Host-Only, then set Fedora’s host-only interface to 192.168.56.20/24, verified Ubuntu server host-only interface is 192.168.56.10/24, then re-tested ping + SSH.
+Verification: Ping succeeded and SSH login worked from Fedora to Ubuntu (ssh kuval@192.168.56.10).
 
 ═══════════════════════════════════════════════════════
 COMPLETION CHECKLIST
@@ -186,5 +203,4 @@ COMPLETION CHECKLIST
 □ Ubuntu vs Fedora comparison completed with evidence
 □ Host-only network configured + static IPs + SSH works
 □ CLI specs captured for server + workstation
-□ Week 1 committed to GitHub Pages
 
