@@ -60,6 +60,10 @@ by default, allowing SSH access only from the Fedora workstation (192.168.56.20)
 □ MAC: Ubuntu AppArmor (verify status), Fedora SELinux enforcing (verify with sestatus)
 □ Automatic security updates: enable unattended upgrades (Ubuntu)
 □ fail2ban: protect SSH logins
+
+![Fail2Ban SSH jail active](images/week2/fail2ban-status.png)
+*Figure X: Fail2Ban service running on Ubuntu Server with the SSH (sshd) jail active, monitoring authentication attempts.*
+
 □ User privilege management: non-root admin user, controlled sudo access
 □ Network isolation: host-only for admin traffic, NAT only for updates
 
