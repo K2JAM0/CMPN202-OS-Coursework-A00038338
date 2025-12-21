@@ -15,6 +15,7 @@ Fedora uses dnf, which supports newer packages but updates more frequently.
 - Default MAC:
 Ubuntu uses AppArmor by default, which provides profile-based mandatory access control.
 Fedora uses SELinux in enforcing mode by default, offering fine-grained MAC at the cost of higher complexity.
+(Has been verified using 'sestatus', Figure)
 
 - Default firewall tooling:
 Ubuntu uses UFW as a simplified frontend to iptables/nftables.
@@ -52,14 +53,14 @@ ping -c 4 192.168.56.10
 ssh kuval@192.168.56.10
 
 ![Static IP applied](images/week1/static-ip-applied.png)
-*Figure X: Host-only network interface configured with static IP 192.168.56.10/24, confirming correct VirtualBox host-only networking.*
+*Figure : Host-only network interface configured with static IP 192.168.56.10/24, confirming correct VirtualBox host-only networking.*
 
 ═══════════════════════════════════════════════════════
 SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
 SERVER:
 
 ![SSH login successful](images/week1/ssh-login.png)
-*Figure 1: Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
+*Figure : Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
 
 uname -a
 
@@ -136,12 +137,17 @@ ls -l /
 Fedora:
 
 ![Fedora Server login successful](images/week1/fedora-login.png)
-*Figure X: Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
+*Figure : Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
 
 dnf --version
 systemctl list-units --type=service --state=running | head
 ls -l /
-[SCREENSHOT HERE]
+
+![Fedora dnf version output](images/week1/fedora-dnf-version.png)
+*Figure : Fedora package manager `dnf` version output, confirming Fedora uses DNF instead of APT.*
+
+![Fedora SELinux enforcing and running services](images/week1/fedora-selinux-services.png)
+*Figure : SELinux confirmed enforcing with `sestatus`, and sample of active services using `systemctl list-units` on Fedora.*
 ═══════════════════════════════════════════════════════
 MONITORING TOOLS (Lab) — install/run and note observations (idle, updates, file copy).
 Ubuntu:
