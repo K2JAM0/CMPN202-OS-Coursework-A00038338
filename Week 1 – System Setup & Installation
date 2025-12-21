@@ -7,7 +7,7 @@ Must show: Workstation -> SSH -> Server VM (headless), plus NAT + Host-only netw
 DISTRIBUTION SELECTION JUSTIFICATION
 Chosen server distro: Ubuntu Server 24.04.3 LTS
 Alternative compared against: Fedora server 43
-Comparison prompts (fill with evidence):
+
 - Package manager:
 Ubuntu uses apt, which is widely documented and stable for LTS environments.
 Fedora uses dnf, which supports newer packages but updates more frequently.
@@ -15,7 +15,7 @@ Fedora uses dnf, which supports newer packages but updates more frequently.
 - Default MAC:
 Ubuntu uses AppArmor by default, which provides profile-based mandatory access control.
 Fedora uses SELinux in enforcing mode by default, offering fine-grained MAC at the cost of higher complexity.
-(Has been verified using 'sestatus', Figure)
+(Has been verified using 'sestatus', Figure 1)
 
 - Default firewall tooling:
 Ubuntu uses UFW as a simplified frontend to iptables/nftables.
@@ -50,24 +50,24 @@ Server host-only IP: 192.168.56.10/24
 Workstation host-only IP (if Linux VM/WSL): 192.168.56.20/24
 
 ![Fedora workstation static IP](images/week1/fedora-enp0s8-static-ip.png)
-*Figure : Fedora workstation host-only interface (enp0s8) configured with static IP 192.168.56.20/24, enabling controlled SSH administration of the Ubuntu server.*
+*Figure 2: Fedora workstation host-only interface (enp0s8) configured with static IP 192.168.56.20/24, enabling controlled SSH administration of the Ubuntu server.*
 
 Connectivity tests evidence: ping + SSH
 ping -c 4 192.168.56.10
 ssh kuval@192.168.56.10
 
 ![Static IP applied](images/week1/static-ip-applied.png)
-*Figure : Host-only network interface configured with static IP 192.168.56.10/24, confirming correct VirtualBox host-only networking.*
+*Figure 3: Host-only network interface configured with static IP 192.168.56.10/24, confirming correct VirtualBox host-only networking.*
 
 ![SSH success from Fedora workstation to Ubuntu server](images/week1/week1-ssh-success-fedora-to-ubuntu.png)
-*Figure : Successful SSH connection from Fedora workstation (192.168.56.20) to Ubuntu server (192.168.56.10), confirming host-only networking and remote administration over SSH.*
+*Figure 4: Successful SSH connection from Fedora workstation (192.168.56.20) to Ubuntu server (192.168.56.10), confirming host-only networking and remote administration over SSH.*
 
 ═══════════════════════════════════════════════════════
 SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
 SERVER:
 
 ![SSH login successful](images/week1/ssh-login.png)
-*Figure : Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
+*Figure 5: Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
 
 uname -a
 
@@ -76,11 +76,11 @@ Linux ubuntu-server 6.8.0-90-generic #91-Ubuntu SMP PREEMPT_DYNAMIC Tue Nov 18 1
 free -h
               total        used        free      shared  buff/cache   available
 Mem:           1.9Gi       326Mi       1.5Gi       1.0Mi       201Mi       1.6Gi
-Swap:          2.0Gi          0B       2.0Gi]
+Swap:          2.0Gi          0B       2.0Gi
 
 df -h
 
-[Filesystem                         Size  Used Avail Use% Mounted on
+Filesystem                         Size  Used Avail Use% Mounted on
 tmpfs                              197M  1.1M  196M   1% /run
 /dev/mapper/ubuntu--vg-ubuntu--lv   14G  4.6G  8.5G  35% /
 tmpfs                              984M     0  984M   0% /dev/shm
@@ -110,7 +110,7 @@ What this tells me:
 The server has a functioning network interface (enp0s3) using NAT with a dynamically assigned IPv4 address, confirming network connectivity required for SSH administration.
 
 
-cat /etc/os-release
+lsb_release -a
 
 No LSB modules are available.
 Distributor ID: Ubuntu
@@ -166,22 +166,25 @@ Ubuntu:
 apt --version
 systemctl list-units --type=service --state=running | head
 ls -l /
-[SCREENSHOT HERE]
+
+![Ubuntu APT + running services + filesystem](images/week1/ubuntu-apt-services-ls.png)
+*Figure 6: Ubuntu evidence showing APT version, sample running services, and root directory listing for comparison against Fedora.*
+
 
 Fedora:
 
 ![Fedora Server login successful](images/week1/fedora-login.png)
-*Figure : Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
+*Figure 7: Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
 
 dnf --version
 systemctl list-units --type=service --state=running | head
 ls -l /
 
 ![Fedora dnf version output](images/week1/fedora-dnf-version.png)
-*Figure : Fedora package manager `dnf` version output, confirming Fedora uses DNF instead of APT.*
+*Figure 8: Fedora package manager `dnf` version output, confirming Fedora uses DNF instead of APT.*
 
 ![Fedora SELinux enforcing and running services](images/week1/fedora-selinux-services.png)
-*Figure : SELinux confirmed enforcing with `sestatus`, and sample of active services using `systemctl list-units` on Fedora.*
+*Figure 9: SELinux confirmed enforcing with `sestatus`, and sample of active services using `systemctl list-units` on Fedora.*
 ═══════════════════════════════════════════════════════
 CHALLENGES ENCOUNTERED + FIXES
 
@@ -203,4 +206,3 @@ COMPLETION CHECKLIST
 □ Ubuntu vs Fedora comparison completed with evidence
 □ Host-only network configured + static IPs + SSH works
 □ CLI specs captured for server + workstation
-
