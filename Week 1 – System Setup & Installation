@@ -1,8 +1,11 @@
 Week 1 — Phase 1: System Planning & Distribution Selection (Ubuntu vs Fedora)
 ═══════════════════════════════════════════════════════
 SYSTEM ARCHITECTURE DIAGRAM
-[Leave space - insert a diagram image later]
-Must show: Workstation -> SSH -> Server VM (headless), plus NAT + Host-only network.
+
+![Architecture diagram](images/week1/architecture-diagram.png)
+*Figure 1: This is a simple dual-VM architecture. Fedora workstation administers
+the Ubuntu headless server via SSH over the host-only network (192.168.56.0/24).*
+
 ═══════════════════════════════════════════════════════
 DISTRIBUTION SELECTION JUSTIFICATION
 Chosen server distro: Ubuntu Server 24.04.3 LTS
@@ -15,7 +18,7 @@ Fedora uses dnf, which supports newer packages but updates more frequently.
 - Default MAC:
 Ubuntu uses AppArmor by default, which provides profile-based mandatory access control.
 Fedora uses SELinux in enforcing mode by default, offering fine-grained MAC at the cost of higher complexity.
-(Has been verified using 'sestatus', Figure 1)
+(Has been verified using 'sestatus', Figure 7)
 
 - Default firewall tooling:
 Ubuntu uses UFW as a simplified frontend to iptables/nftables.
@@ -31,11 +34,11 @@ My final decision and why:
 Ubuntu Server 24.04 LTS was selected as the primary server platform
 due to its long-term support lifecycle predictable updates, extensive documentation, 
 and simpler security management using AppArmor,
-making it more suitable for a stable academic server environment.
+making it more suitable for a stable server.
 
 ═══════════════════════════════════════════════════════
 WORKSTATION CONFIGURATION DECISION
-Option chosen (A host + SSH / B Linux desktop VM / C hybrid): B — Linux workstation VM (Fedora 43 Server, CLI)
+Option chosen (A host + SSH / B Linux desktop VM / C hybrid): C — Linux workstation VM (Fedora 43 Server, CLI)
 
 Why this satisfies the SSH-only administration constraint: 
 All administration of the Ubuntu server was performed remotely over SSH from a separate Fedora workstation VM.
@@ -65,9 +68,6 @@ ssh kuval@192.168.56.10
 ═══════════════════════════════════════════════════════
 SYSTEM SPECIFICATIONS (run on server + workstation, paste outputs)
 SERVER:
-
-![SSH login successful](images/week1/ssh-login.png)
-*Figure 5: Ubuntu Server 24.04.3 LTS booting to a headless CLI login prompt, confirming successful installation and correct hostname configuration.*
 
 uname -a
 
@@ -138,16 +138,10 @@ tmpfs                              5.0M     0  5.0M   0% /run/lock
 /dev/sda2                          2.0G  150M  1.7G   8% /boot
 tmpfs                              196M   12K  196M   1% /run/user/1000
 
-ip addr
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
-       valid_lft forever preferred_lft forever
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    inet 192.168.56.20/24 brd 192.168.56.255 scope global enp0s8
-       valid_lft forever preferred_lft forever
+ip -br addr
+lo        UNKNOWN   127.0.0.1/8 ::1/128
+enp0s3    UP        10.0.2.15/24 fd17:625c:f037:2:a00:27ff:fe74:cf3b/64 fe80::a00:27ff:fe74:cf3b/64
+enp0s8    UP        192.168.56.20/24 fe80::977f:641d:f716:4e90/64
 
 lsb_release -a OR cat /etc/os-release
 NAME="Fedora Linux"
@@ -168,31 +162,29 @@ systemctl list-units --type=service --state=running | head
 ls -l /
 
 ![Ubuntu APT + running services + filesystem](images/week1/ubuntu-apt-services-ls.png)
-*Figure 6: Ubuntu evidence showing APT version, sample running services, and root directory listing for comparison against Fedora.*
+*Figure 5: Ubuntu evidence showing APT version, sample running services, and root directory listing for comparison against Fedora.*
 
 
 Fedora:
 
 ![Fedora Server login successful](images/week1/fedora-login.png)
-*Figure 7: Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
+*Figure 6: Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
 
 dnf --version
 systemctl list-units --type=service --state=running | head
 ls -l /
 
 ![Fedora dnf version output](images/week1/fedora-dnf-version.png)
-*Figure 8: Fedora package manager `dnf` version output, confirming Fedora uses DNF instead of APT.*
+*Figure 7: Fedora package manager `dnf` version output, confirming Fedora uses DNF instead of APT.*
 
 ![Fedora SELinux enforcing and running services](images/week1/fedora-selinux-services.png)
-*Figure 9: SELinux confirmed enforcing with `sestatus`, and sample of active services using `systemctl list-units` on Fedora.*
+*Figure 8: SELinux confirmed enforcing with `sestatus`, and sample of active services using `systemctl list-units` on Fedora.*
 ═══════════════════════════════════════════════════════
 CHALLENGES ENCOUNTERED + FIXES
 
 Problem: Netplan produced a permissions warning when applying static IP configuration.  
 Cause: The netplan YAML file had overly permissive file permissions.  
 Fix: File permissions were restricted using `chmod 600`, after which netplan applied successfully.
-
-![Netplan permissions fixed](images/week1/netplan-permissions-fixed.png)
 
 Problem: Fedora workstation could not reach Ubuntu server over host-only network (Destination Host Unreachable).
 Evidence: ping -c 4 192.168.56.10 failed from Fedora.
