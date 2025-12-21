@@ -36,6 +36,10 @@ Evidence plan:
 SECURITY CONFIGURATION CHECKLIST (plan)
 
 □ SSH hardening: keys-only, disable password auth, disable root login
+
+![SSH hardening configuration](images/week2/ssh-hardening-config.png)
+*Figure 1: SSH server configuration on Ubuntu with root login and password authentication disabled, enforcing key-based remote access only.*
+
 □ Firewall: allow SSH only from workstation IP (192.168.56.20), default deny inbound
 □ MAC: Ubuntu AppArmor (verify status), Fedora SELinux enforcing (verify with sestatus)
 □ Automatic security updates: enable unattended upgrades (Ubuntu)
