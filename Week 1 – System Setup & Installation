@@ -134,6 +134,10 @@ ls -l /
 [SCREENSHOT HERE]
 
 Fedora:
+
+![Fedora Server login successful](images/week1/fedora-login.png)
+*Figure X: Fedora Server 43 booted successfully and logged in as user `kuval`, confirming correct installation for comparison testing.*
+
 dnf --version
 systemctl list-units --type=service --state=running | head
 ls -l /
