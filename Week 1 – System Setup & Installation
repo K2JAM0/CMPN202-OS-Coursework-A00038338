@@ -135,12 +135,6 @@ nmon
 CHALLENGES ENCOUNTERED + FIXES
 
 Problem: Netplan produced a permissions warning when applying static IP configuration.  
-Cause: The netplan YAML file had overly permissive file permissions. 
-Fix: Corrected file permissions using `chmod 600` and re-applied netplan successfully.
-
-![Netplan permissions warning](images/week1/netplan-permissions-warning.png)
-
-Problem: Netplan produced a permissions warning when applying static IP configuration.  
 Cause: The netplan YAML file had overly permissive file permissions.  
 Fix: File permissions were restricted using `chmod 600`, after which netplan applied successfully.
 
