@@ -176,6 +176,10 @@ Fix: File permissions were restricted using `chmod 600`, after which netplan app
 
 ![Netplan permissions fixed](images/week1/netplan-permissions-fixed.png)
 
+![Ping failed before host-only network was corrected](images/week1/fedora-ping-ubuntu-failed.png)
+*Figure X: Initial ping from Fedora workstation to Ubuntu server failed (“Destination Host Unreachable”), indicating host-only network/IP mismatch before correction.*
+
+
 ═══════════════════════════════════════════════════════
 COMPLETION CHECKLIST
 □ Architecture diagram added
