@@ -1,23 +1,60 @@
 Week 2 — Phase 2: Security Planning & Performance Testing Methodology
 ═══════════════════════════════════════════════════════
 PERFORMANCE TESTING PLAN (remote methodology)
-How will you collect metrics remotely over SSH? What tools, how often, and what tables will you fill?
-Tools planned: top/htop, free, vmstat, iostat, iotop, ss, ping, iperf3, ab, journalctl/logs
+
+Planned data table (to fill in Week 6):
+Test Case | App/Workload | CPU % | RAM MB | Disk R/W | Net Mbps | Notes
+Baseline idle | N/A | | | | | |
+Under load | [app] | | | | | |
+After optimisation | [app] | | | | | |
+
+
+Method:
+- I will administer and monitor the Ubuntu Server remotely from the Fedora workstation using SSH over the host-only network.
+- During testing weeks, I will collect metrics in three states: (1) baseline idle, (2) under load, (3) after optimisation.
+
+Remote metric collection approach:
+- Run commands from workstation like:
+  ssh kuval@192.168.56.10 "<command>"
+- Save outputs into timestamped files for later tables and graphs.
+
+Planned metrics + tools (commands to be used later):
+- CPU: mpstat / top
+- Memory: free -h / vmstat
+- Disk I/O: iostat -x / iotop
+- Network: ss -s / ping / iperf3 (inside host-only network)
+
+Evidence plan:
+- Week 2: screenshot of successful SSH from Fedora → Ubuntu
+- Week 6: tables + graphs built from saved outputs
+
 ═══════════════════════════════════════════════════════
 SECURITY CONFIGURATION CHECKLIST (plan)
-□ SSH hardening (keys, disable password, no root login)
-□ Firewall (allow SSH only from workstation IP)
-□ MAC (AppArmor on Ubuntu / SELinux on Fedora)
-□ Automatic security updates
-□ fail2ban
-□ User privilege management
-□ Network isolation (host-only)
+
+□ SSH hardening: keys-only, disable password auth, disable root login
+□ Firewall: allow SSH only from workstation IP (192.168.56.20), default deny inbound
+□ MAC: Ubuntu AppArmor (verify status), Fedora SELinux enforcing (verify with sestatus)
+□ Automatic security updates: enable unattended upgrades (Ubuntu)
+□ fail2ban: protect SSH logins
+□ User privilege management: non-root admin user, controlled sudo access
+□ Network isolation: host-only for admin traffic, NAT only for updates
+
 ═══════════════════════════════════════════════════════
-THREAT MODEL (minimum 3) — fill with your own threats + mitigations
-Threat 1: ____________________  Mitigation: ____________________
-Threat 2: ____________________  Mitigation: ____________________
-Threat 3: ____________________  Mitigation: ____________________
+THREAT MODEL (minimum 3)
+
+Threat 1: SSH brute-force login attempts
+Mitigation: keys-only SSH + restrict SSH source IP + fail2ban
+
+Threat 2: Unnecessary services increase attack surface
+Mitigation: service audit (systemctl), disable/remove non-essential services, firewall default deny
+
+Threat 3: Privilege escalation through weak user/sudo configuration
+Mitigation: non-root admin user, least privilege with sudo, regular security updates
+
 ═══════════════════════════════════════════════════════
 REFLECTION
-Security vs performance/usability trade-offs you anticipate: ________________________________
 
+Security vs performance/usability trade-offs anticipated:
+- Restricting SSH to one IP improves security but reduces flexibility for admin access.
+- fail2ban/logging improves security visibility but adds small overhead (CPU/disk writes).
+- Stronger MAC enforcement improves containment but may require extra configuration to avoid blocking legitimate services.
