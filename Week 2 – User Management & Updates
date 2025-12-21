@@ -18,6 +18,10 @@ Remote metric collection approach:
   ssh kuval@192.168.56.10 "<command>"
 - Save outputs into timestamped files for later tables and graphs.
 
+![SSH verification](images/week2/ssh-fedora-to-ubuntu-ip.png)
+*Figure X: Verification of SSH access from Fedora workstation to Ubuntu server, confirming host-only networking and remote administration.*
+
+
 Planned metrics + tools (commands to be used later):
 - CPU: mpstat / top
 - Memory: free -h / vmstat
