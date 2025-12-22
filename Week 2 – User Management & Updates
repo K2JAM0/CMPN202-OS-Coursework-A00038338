@@ -19,7 +19,7 @@ Remote metric collection approach:
 - Save outputs into timestamped files for later tables and graphs.
 
 ![SSH verification](images/week2/ssh-fedora-to-ubuntu-ip.png)
-*Figure X: Verification of SSH access from Fedora workstation to Ubuntu server, confirming host-only networking and remote administration.*
+*Figure 1: Verification of SSH access from Fedora workstation to Ubuntu server, confirming host-only networking and remote administration.*
 
 
 Planned metrics + tools (commands to be used later):
@@ -31,6 +31,9 @@ Planned metrics + tools (commands to be used later):
 Evidence plan:
 - Week 2: screenshot of successful SSH from Fedora → Ubuntu
 - Week 6: tables + graphs built from saved outputs
+
+No performance results are collected in Week 2; this phase defines the testing methodology and tools,
+with measurements recorded during execution phases (Weeks 5–6).
 
 ═══════════════════════════════════════════════════════
 SECURITY CONFIGURATION CHECKLIST (plan)
@@ -58,29 +61,58 @@ by default, allowing SSH access only from the Fedora workstation (192.168.56.20)
 
 
 □ MAC: Ubuntu AppArmor (verify status), Fedora SELinux enforcing (verify with sestatus)
+
+Ubuntu AppArmor status was verified using `aa-status`, confirming profiles are loaded and enforcing.
+Fedora SELinux was verified as enforcing using `sestatus`.
+
 □ Automatic security updates: enable unattended upgrades (Ubuntu)
+
+Automatic security updates were enabled using `unattended-upgrades` to ensure critical security patches are applied without manual intervention.
+This reduces exposure to known vulnerabilities while maintaining system stability.
+
 □ fail2ban: protect SSH logins
 
+Fail2Ban was installed and configured to monitor SSH authentication attempts.
+The SSH jail is active and will automatically ban IP addresses that exceed the allowed number of failed login attempts.
+
 ![Fail2Ban SSH jail active](images/week2/fail2ban-status.png)
-*Figure X: Fail2Ban service running on Ubuntu Server with the SSH (sshd) jail active, monitoring authentication attempts.*
+*Figure 3: Fail2Ban service running on Ubuntu Server with the SSH (sshd) jail active, monitoring authentication attempts.*
 
 □ User privilege management: non-root admin user, controlled sudo access
+
+User privilege management was verified by confirming that the primary user (`kuval`) is a non-root account with controlled sudo access.
+The user belongs to the `sudo` group and requires explicit privilege escalation to perform administrative tasks.
+This follows the principle of least privilege.
+
+uid=1000(kuval) gid=1000(kuval) groups=1000(kuval),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),101(lxd)
+
+Matching Defaults entries for kuval on ubuntu-server:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+User kuval may run the following commands on ubuntu-server:
+    (ALL : ALL) ALL
+
+ 
 □ Network isolation: host-only for admin traffic, NAT only for updates
 
 ═══════════════════════════════════════════════════════
-THREAT MODEL (minimum 3)
+THREAT MODEL 
 
-Threat 1: SSH brute-force login attempts
-Mitigation: keys-only SSH + restrict SSH source IP + fail2ban
+Threat 1: Brute-force SSH login attempts  
+Mitigation: SSH password authentication was disabled and Fail2Ban was enabled to automatically block repeated failed login attempts.
 
-Threat 2: Unnecessary services increase attack surface
-Mitigation: service audit (systemctl), disable/remove non-essential services, firewall default deny
+Threat 2: Unauthorized network access to the server  
+Mitigation: The Ubuntu firewall (UFW) was configured to deny all incoming traffic by default and allow SSH access only from the trusted Fedora workstation IP (192.168.56.20).
 
-Threat 3: Privilege escalation through weak user/sudo configuration
-Mitigation: non-root admin user, least privilege with sudo, regular security updates
+Threat 3: Privilege escalation by unauthorized users  
+Mitigation: Direct root login over SSH was disabled, and administrative access is restricted to a non-root user (`kuval`) via sudo.
+
 
 ═══════════════════════════════════════════════════════
 REFLECTION
+
+Disabling password-based SSH authentication and enforcing firewall restrictions increases security but slightly reduces usability during initial setup.
+However, the trade-off is acceptable for a server environment, as it significantly reduces the attack surface while maintaining stable remote administration.
 
 Security vs performance/usability trade-offs anticipated:
 - Restricting SSH to one IP improves security but reduces flexibility for admin access.
