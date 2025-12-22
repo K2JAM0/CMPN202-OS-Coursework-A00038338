@@ -29,8 +29,13 @@ sudo ufw enable
 sudo ufw status numbered
 
 ![UFW status](images/week3/ufw-status.png)
-*Figure 1: UFW firewall configured to deny all incoming traffic except SSH from the Fedora workstation (192.168.56.20).*
-Fedora note (if you used Fedora for server): firewalld commands go here.
+090909909090909090*Figure 1: UFW firewall configured to deny all incoming traffic except SSH from the Fedora workstation (192.168.56.20).*
+
+sudo ufw status verbose
+
+![UFW SSH restricted](images/week4/ufw-ssh-restricted.png)
+*Figure 2: UFW firewall status showing default deny inbound policy with SSH (port 22) allowed only from the Fedora workstation IP (192.168.56.20).*
+
 
 ═══════════════════════════════════════════════════════
 USER & PRIVILEGE MANAGEMENT
