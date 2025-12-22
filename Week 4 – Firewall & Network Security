@@ -26,15 +26,11 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow from 192.168.56.20 to any port 22 proto tcp
 sudo ufw enable
-sudo ufw status numbered
-
-![UFW status](images/week3/ufw-status.png)
-090909909090909090*Figure 1: UFW firewall configured to deny all incoming traffic except SSH from the Fedora workstation (192.168.56.20).*
-
 sudo ufw status verbose
 
 ![UFW SSH restricted](images/week4/ufw-ssh-restricted.png)
-*Figure 2: UFW firewall status showing default deny inbound policy with SSH (port 22) allowed only from the Fedora workstation IP (192.168.56.20).*
+*Figure 2: UFW firewall status showing default deny inbound policy with SSH (port 22)
+allowed only from the Fedora workstation IP (192.168.56.20).*
 
 
 ═══════════════════════════════════════════════════════
@@ -43,8 +39,12 @@ sudo adduser osadmin
 sudo usermod -aG sudo osadmin
 id osadmin
 getent group sudo
-[SCREENSHOT HERE]
-Explain least privilege: ____________________
+
+![User privilege management](images/week4/user-sudo-osadmin.png)
+*Figure 3: Non-root administrative user `osadmin` added to the sudo group,
+confirming controlled privilege escalation in accordance with the principle of least privilege.
+Least privilege is applied by using a non-root user which is (osadmin) for administration and
+granting sudo access when needed which reduces risk of malicious or accidental system changes.
 ═══════════════════════════════════════════════════════
 REMOTE ADMIN EVIDENCE (run from workstation)
 ssh kuval@192.168.56.10 'uname -a'
