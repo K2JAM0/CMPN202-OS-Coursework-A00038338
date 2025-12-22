@@ -3,6 +3,13 @@ Week 3 — Phase 3: Application Selection for Performance Testing
 APPLICATION SELECTION MATRIX (you fill)
 Workload types to cover: CPU, Memory, Disk I/O, Network, Server/response time.
 Apps you might use: stress/stress-ng, dd, iperf3, apache/httpd + ab, scp transfer tests.
+Workload Type 	     Application          Purpose
+CPU	                  stress-ng	          Generate sustained CPU load across multiple cores
+Memory	              stress-ng          	Allocate and pressure system RAM
+Disk I/O       	      dd	                Measure sequential disk write/read performance
+Network       	      iperf3	            Measure bandwidth and throughput on host-only network
+Server /Response Time	Apache + ab         Measure HTTP response time and request handling under load 
+
 ═══════════════════════════════════════════════════════
 INSTALLATION COMMANDS (server via SSH) — paste exact commands you ran
 Ubuntu example:
@@ -13,14 +20,14 @@ from the Fedora workstation:
 sudo apt update
 sudo apt install stress-ng sysstat iotop iperf3 apache2 -y
 
-![Application installation](images/week3/app-installation.png)
+![Apache running](images/week3/apache-running.png)
 *Figure 1: Apache HTTP server active and running on ubuntu
 
-Fedora example:
-sudo dnf install stress-ng sysstat iotop iperf3 httpd -y
-[IF YOU TESTED ON FEDORA, DOCUMENT IT]
+Fedora was used solely as the administrative workstation for remote monitoring and SSH access.
+All performance testing applications were installed and executed on the Ubuntu Server only.
+
 ═══════════════════════════════════════════════════════
-EXPECTED RESOURCE PROFILES (write predictions before testing)
+EXPECTED RESOURCE PROFILES (predictions before testing)
 
 - CPU app expected: stress-ng will drive CPU usage close to 100% across available cores.
 - Memory app expected: stress-ng memory workers will significantly increase RAM usage.
