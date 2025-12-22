@@ -1,4 +1,18 @@
 Week 6 — Phase 6: Performance Testing + File Systems + Network + Optimisation + Trade-offs
+====================================================
+TEST SETUP & METHODOLOGY
+
+Performance testing was conducted remotely from the Fedora workstation
+using SSH over the host-only network, as defined in Week 2.
+
+Metrics were collected in three phases:
+1) Baseline (idle)
+2) Under load
+3) After optimisation
+
+All measurements were gathered using scripted SSH-based monitoring to
+ensure consistency and repeatability.
+
 ═══════════════════════════════════════════════════════
 FILE SYSTEM EXPLORATION (Lab)
 ls -l /
