@@ -1,6 +1,6 @@
 Week 4 — Phase 4: Initial Security Implementation (SSH, Firewall, Users)
 ═══════════════════════════════════════════════════════
-ADMIN CONSTRAINT: All server configuration was performed remotely over SSH from the Fedora workstation,
+ADMIN CONSTRAINT: All server configuration was done remotely over SSH from the Fedora workstation,
 satisfying the SSH-only administration constraint.
 ═══════════════════════════════════════════════════════
 SSH KEY SETUP (workstation)
@@ -9,7 +9,8 @@ ssh-copy-id kuval@192.168.56.10
 ssh kuval@192.168.56.10
 
 ![Passwordless SSH login](images/week4/ssh-passwordless-login.png)
-*Figure X: Passwordless SSH login from the Fedora workstation to the Ubuntu server using an ED25519 key, confirming key-based authentication is working.*
+*Figure 5: Passwordless SSH login from the Fedora workstation to the Ubuntu server using an ED25519 key,
+which confirms that key-based authentication is working.*
 ═══════════════════════════════════════════════════════
 SSH HARDENING (server) — before/after evidence
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
@@ -22,7 +23,7 @@ sudo systemctl restart ssh
 sudo systemctl status ssh --no-pager
 
 ![SSH hardening configuration](images/week3/ssh-hardening-config.png)
-*Figure X: SSH server hardened by disabling password authentication and root login, and enforcing public key authentication. Configuration reused from earlier implementation and remains active in Week 4.*
+*Figure 6: SSH server hardened by disabling password authentication and root login, and enforcing public key authentication. Configuration reused from earlier implementation and remains active in Week 4.*
 ═══════════════════════════════════════════════════════
 FIREWALL (server) — restrict SSH to workstation IP only
 Ubuntu (UFW) example:
@@ -48,8 +49,8 @@ getent group sudo
 ![User privilege management](images/week4/user-sudo-osadmin.png)
 *Figure 3: Non-root administrative user `osadmin` added to the sudo group,
 confirming controlled privilege escalation in accordance with the principle of least privilege.
-Least privilege is applied by using a non-root user which is (osadmin) for administration and
-granting sudo access when needed which reduces risk of malicious or accidental system changes.
+Least privilege is enforced by using a non-root administrative user (`osadmin`)
+granting sudo access only when required, reducing the risk of accidental or malicious system changes.
 ═══════════════════════════════════════════════════════
 REMOTE ADMIN EVIDENCE (run from workstation)
 ssh kuval@192.168.56.10 'uname -a'
@@ -57,7 +58,7 @@ ssh kuval@192.168.56.10 'free -h'
 ssh kuval@192.168.56.10 'sudo ufw status'
 
 ![Remote administration evidence](images/week4/remote-admin-evidence.png)
-*Figure X: Secure remote administration of the Ubuntu server performed over SSH from the Fedora workstation,
+*Figure 4: Secure remote administration of the Ubuntu server performed over SSH from the Fedora workstation,
 including system information and firewall status.*
 
 ═══════════════════════════════════════════════════════
