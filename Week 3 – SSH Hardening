@@ -6,22 +6,37 @@ Apps you might use: stress/stress-ng, dd, iperf3, apache/httpd + ab, scp transfe
 ═══════════════════════════════════════════════════════
 INSTALLATION COMMANDS (server via SSH) — paste exact commands you ran
 Ubuntu example:
+The following applications were installed on the Ubuntu Server via SSH
+from the Fedora workstation:
+
+```bash
 sudo apt update
-sudo apt install stress sysstat iotop iperf3 apache2 -y
-[PASTE YOUR EXACT COMMANDS + SCREENSHOT]
+sudo apt install stress-ng sysstat iotop iperf3 apache2 -y
+
+![Application installation](images/week3/app-installation.png)
+*Figure 1: Apache HTTP server active and running on ubuntu
 
 Fedora example:
 sudo dnf install stress-ng sysstat iotop iperf3 httpd -y
 [IF YOU TESTED ON FEDORA, DOCUMENT IT]
 ═══════════════════════════════════════════════════════
 EXPECTED RESOURCE PROFILES (write predictions before testing)
-- CPU app expected: ____________________
-- Memory app expected: __________________
-- I/O app expected: _____________________
-- Network app expected: __________________
-- Server app expected: ___________________
+
+- CPU app expected: stress-ng will drive CPU usage close to 100% across available cores.
+- Memory app expected: stress-ng memory workers will significantly increase RAM usage.
+- I/O app expected: dd will cause high disk write throughput and increased I/O wait.
+- Network app expected: iperf3 will saturate host-only network bandwidth.
+- Server app expected: Apache under ab load will increase CPU usage and response latency.
+
 ═══════════════════════════════════════════════════════
 MONITORING STRATEGY PER APP
 What metrics will you record for each app and how will you capture evidence?
+
+For each application, system metrics will be monitored remotely via SSH.
+CPU and memory usage will be captured using htop, mpstat, and free.
+Disk activity will be monitored using iotop and iostat.
+Network performance will be measured using iperf3 and ss.
+Evidence will be collected as terminal outputs and selective screenshots.
+
 ═══════════════════════════════════════════════════════
 
