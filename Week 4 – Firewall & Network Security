@@ -7,7 +7,9 @@ SSH KEY SETUP (workstation)
 ssh-keygen -t ed25519 -C "A00038338"
 ssh-copy-id kuval@192.168.56.10
 ssh kuval@192.168.56.10
-[SCREENSHOT: passwordless login + username@hostname]
+
+![Passwordless SSH login](images/week4/ssh-passwordless-login.png)
+*Figure X: Passwordless SSH login from the Fedora workstation to the Ubuntu server using an ED25519 key, confirming key-based authentication is working.*
 ═══════════════════════════════════════════════════════
 SSH HARDENING (server) — before/after evidence
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
@@ -18,7 +20,9 @@ PubkeyAuthentication yes
 PermitRootLogin no
 sudo systemctl restart ssh
 sudo systemctl status ssh --no-pager
-[SCREENSHOTS: config BEFORE/AFTER + service status]
+
+![SSH hardening configuration](images/week3/ssh-hardening-config.png)
+*Figure X: SSH server hardened by disabling password authentication and root login, and enforcing public key authentication. Configuration reused from earlier implementation and remains active in Week 4.*
 ═══════════════════════════════════════════════════════
 FIREWALL (server) — restrict SSH to workstation IP only
 Ubuntu (UFW) example:
