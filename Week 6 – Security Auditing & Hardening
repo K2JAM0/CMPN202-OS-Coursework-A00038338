@@ -22,7 +22,27 @@ ls -l /home
 sudo apt install tree -y
 tree -L 2 /etc
 stat /etc/passwd
-[SCREENSHOTS + your explanations]
+
+![Filesystem structure](images/week6/week6-filesystem-tree.png)
+*Figure X: Directory hierarchy of /etc showing organised system configuration files.*
+
+![passwd file metadata](images/week6/week6-passwd-stat.png)
+*Figure X: File metadata for /etc/passwd showing ownership, permissions, and timestamps.*
+
+The Linux filesystem follows a hierarchical structure designed to separate
+system binaries, configuration, variable data, and user files.
+
+- / contains the root of the filesystem hierarchy and critical system directories.
+- /etc stores system-wide configuration files, including user accounts and services.
+- /var contains variable data such as logs, caches, and spool files that change frequently.
+- /home stores user home directories and personal data.
+
+The tree command was used to visualise the structure of /etc, confirming the
+organisation of configuration files by service.
+
+The stat command on /etc/passwd shows file ownership, permissions, and timestamps,
+demonstrating how user account data is protected by standard UNIX permissions.
+
 ═══════════════════════════════════════════════════════
 STORAGE PERFORMANCE (Lab)
 sudo apt install sysstat iotop -y
@@ -33,31 +53,97 @@ dd if=/dev/zero of=testfile bs=1M count=1024 oflag=direct
 sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'
 dd if=testfile of=/dev/null bs=1M count=1024
 rm testfile
+
 [SCREENSHOTS + record MB/s]
 ═══════════════════════════════════════════════════════
 NETWORK CONFIG + PERFORMANCE (Lab)
 ip addr show
 ip route show
-ss -tuln
 ping -c 10 192.168.56.10
 # iperf3:
 # Server: iperf3 -s
 # Workstation: iperf3 -c 192.168.56.10 -t 30
-[SCREENSHOTS + tables]
+
+![Network configuration](images/week6/week6-network-config.png)
+*Figure 2: Ubuntu server network configuration showing host-only interface with
+IP address 192.168.56.10 used for administrative traffic.*
+
+![Network latency test](images/week6/week6-network-latency.png)
+*Figure 3: ICMP latency test from Fedora workstation to Ubuntu server over the host-only network,
+showing low and consistent round-trip times.*
+
+![Network throughput test](images/week6/week6-network-throughput.png)
+*Figure 4: iperf3 TCP throughput test from the Fedora workstation to the Ubuntu server over the host-only network,
+measuring sustained bandwidth and confirming stable network performance.*
+
+| Test | Duration | Avg Throughput |
+|----|----|----|
+| iperf3 TCP | 30s | ___ Mbps |
 ═══════════════════════════════════════════════════════
 BASELINE PERFORMANCE TABLE (server idle)
-[Fill: CPU, memory, disk I/O, load average, connections, latency]
+
+![Baseline idle metrics](images/week6/week6-baseline-idle.png)
+*Figure 1: Baseline (idle) system metrics collected over SSH from the Fedora workstation,
+showing CPU, memory, disk usage, network interfaces, and socket summary before any workload is applied.*
+
+| Metric | Baseline (Idle) |
+|------|----------------|
+| CPU usage | ~0–1% |
+| Memory usage | ~376 MB |
+| Disk usage | ~37% root filesystem |
+| Active TCP connections | 9 |
+
 ═══════════════════════════════════════════════════════
-APPLICATION LOAD TESTING (Phase 6) — repeat per application
-For each app: command, monitoring evidence, results table.
+APPLICATION LOAD TESTING (Apache)
+
+![Apache under load](images/week6/week6-apache-load.png)
+*Figure 5: Apache HTTP server under synthetic load using ApacheBench (ab),
+showing increased CPU utilisation and active connections compared to baseline idle state.*
+
+| Metric | Baseline | Under Load |
+|------|--------|-----------|
+| CPU usage | ~0–1% | ↑ during test |
+| Memory usage | ~376 MB | ↑ |
+| Disk usage | ~37% | ~37% |
+| Active TCP connections | 9 | ↑ |
+
+
+
 ═══════════════════════════════════════════════════════
 OPTIMISATION LOG (Week 12 content embedded here) — at least TWO optimisations
-Optimisation #1 (CPU/memory/disk/network): ____________________
-Before config + metrics: ____________________
-Commands used: ____________________
-After config + metrics: ____________________
-Improvement %: ____________________
-Trade-offs: ____________________
+Optimisation #1 (CPU/memory/disk/network): Apache MPM tuning (process/thread handling)
+
+Before (baseline):
+Requests/sec: 4829.89
+Time per request (mean): 10.352 ms
+Transfer rate: 51624.18 KB/s
+
+Commands used:
+- nano /etc/apache2/mods-available/mpm_event.conf
+- systemctl restart apache2
+- ab -n 1000 -c 50 http://127.0.0.1/
+
+After (post-change):
+Requests/sec: 4370.44
+Time per request (mean): 11.441 ms
+Transfer rate: 46713.33 KB/s
+
+Improvement:
+Requests/sec decreased by ~9.5%
+Latency increased by ~10.5%
+
+The post-change configuration resulted in lower throughput and increased latency.
+This indicates a trade-off between performance and stability/security.
+
+Possible causes include:
+- Increased Apache worker overhead from MPM configuration changes
+- Additional process and memory overhead under higher concurrency
+- Security-related defaults prioritising stability over raw throughput
+
+While performance decreased, the configuration may offer improved predictability
+and safer behaviour under sustained or abusive load.
+
+
 ═══════════════════════════════════════════════════════
 TRADE-OFF ANALYSIS (minimum 6 with quantitative data)
 Trade-off #1: ____________________ (include numbers)
