@@ -1,3 +1,4 @@
+=======================================================
 Week 2 — Phase 2: Security Planning & Performance Testing Methodology
 ═══════════════════════════════════════════════════════
 PERFORMANCE TESTING PLAN (remote methodology)
