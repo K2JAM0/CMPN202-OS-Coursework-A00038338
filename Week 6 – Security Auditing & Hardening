@@ -93,7 +93,7 @@ measuring sustained bandwidth and confirming stable network performance.*
 
 | Test | Duration | Avg Throughput |
 |----|----|----|
-| iperf3 TCP | 30s | ___ Mbps |
+| iperf3 TCP | 30s | 2740 Mbps |
 ═══════════════════════════════════════════════════════
 BASELINE PERFORMANCE TABLE (server idle)
 
@@ -162,7 +162,7 @@ Trade-offs:
 Optimisation #2: Network throughput tuning using iperf3 validation
 
 Baseline network throughput:
-Average TCP throughput: ~7.6 Gbit/s
+Average TCP throughput ([SUM] receiver): 27.4 Gbit/s
 
 Commands used:
 - iperf3 -s (server)
