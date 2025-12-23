@@ -31,7 +31,7 @@ Fedora follows a rapid release model with newer kernels and packages.
 - Default running services: Verified using systemctl list-units --type=service --state=running on both systems.
 
 My final decision and why:
-Ubuntu Server 24.04 LTS was selected as the primary server platform
+I decided to use Ubuntu Server 24.04 LTS as the primary server platform
 due to its long-term support lifecycle predictable updates, extensive documentation, 
 and simpler security management using AppArmor,
 making it more suitable for a stable server.
@@ -107,7 +107,8 @@ ip addr
        valid_lft forever preferred_lft forever
 
 What this tells me:
-The server has a functioning network interface (enp0s3) using NAT with a dynamically assigned IPv4 address, confirming network connectivity required for SSH administration.
+This shows me that the server has a functioning network interface (enp0s3) using NAT with a dynamically assigned IPv4 address,
+confirming network connectivity required for SSH administration.
 
 
 lsb_release -a
@@ -198,3 +199,7 @@ COMPLETION CHECKLIST
 □ Ubuntu vs Fedora comparison completed with evidence
 □ Host-only network configured + static IPs + SSH works
 □ CLI specs captured for server + workstation
+
+My notes: For week 1 I focused on getting the 2-VM setup working (Ubuntu and Fedora)
+The issue that occured was when host-only networking did not work at first. So I
+had to double check the VirtualBox adapters and set static IPs on both. 
