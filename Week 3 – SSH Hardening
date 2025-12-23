@@ -11,14 +11,13 @@ Network       	      iperf3	            Measure bandwidth and throughput on host
 Server /Response Time	Apache + ab         Measure HTTP response time and request handling under load 
 
 ═══════════════════════════════════════════════════════
-INSTALLATION COMMANDS (server via SSH) — paste exact commands you ran
-Ubuntu example:
-The following applications were installed on the Ubuntu Server via SSH
-from the Fedora workstation:
+INSTALLATION COMMANDS (server via SSH)
+
+I installed the selected tools on the Ubuntu server **via SSH from my Fedora workstation**:
 
 ```bash
 sudo apt update
-sudo apt install stress-ng sysstat iotop iperf3 apache2 -y
+sudo apt install -y stress-ng sysstat iotop iperf3 apache2 apache2-utils
 
 ![Apache running](images/week3/apache-running.png)
 *Figure 1: Apache HTTP server active and running on ubuntu
