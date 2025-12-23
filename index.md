@@ -10,10 +10,10 @@ All commands, configurations, screenshots, logs, and performance/security result
 
 
 ## Table of Contents
-- Week 1 — System planning & distro selection
-- Week 2 — Security planning & testing methodology
-- Week 3 — Application selection for testing
-- Week 4 — SSH, firewall, users
-- Week 5 — MAC, updates, Fail2Ban, scripts
-- Week 6 — Performance testing, optimisation, trade-offs
-- Week 7 — Security audit & evaluation
+- [Week 1 — System planning & distro selection](./w1.md)
+- [Week 2 — Security planning & testing methodology](./w2.md)
+- [Week 3 — Application selection for testing](./w3.md)
+- [Week 4 — SSH, firewall, users](./w4.md)
+- [Week 5 — MAC, updates, Fail2Ban, scripts](./w5.md)
+- [Week 6 — Performance testing, optimisation, trade-offs](./w6.md)
+- [Week 7 — Security audit & evaluation](./w7.md)
