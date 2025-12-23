@@ -5,22 +5,23 @@ sudo apt install lynis -y
 sudo lynis audit system
 # Save log:
 
-![Lynis audit before](images/week7/lynis-before.png)
-*Figure 1: Lynis security audit on Ubuntu Server before additional hardening, showing the initial hardening index.*
+![Lynis hardening index (before)](images/week7/lynis-index-before.png)
+*Figure 1: Lynis hardening index captured before applying final remediation steps (Hardening index: 65).*
 
-sudo cp /var/log/lynis.log ~/lynis-before.log
-[SCREENSHOT: hardening index]
+![Lynis hardening index (after)](images/week7/lynis-index-after.png)
+*Figure 1: Lynis hardening index captured after applying remediation (Hardening index remained 65).*
+
 ═══════════════════════════════════════════════════════
 NMAP SCAN (workstation -> server, host-only network only)
 sudo apt install nmap -y
 nmap 192.168.56.10
 ![Nmap basic scan](images/week7/nmap-basic-scan.png)
-*Figure 2: Basic Nmap scan of the Ubuntu server over the host-only network,
+*Figure 3: Basic Nmap scan of the Ubuntu server over the host-only network,
 showing only required ports exposed.*
 
 nmap -sV 192.168.56.10
 ![Nmap service version scan](images/week7/nmap-service-scan.png)
-*Figure 3: Nmap service and version detection scan identifying SSH and Apache
+*Figure 4: Nmap service and version detection scan identifying SSH and Apache
 services running on the Ubuntu server.*
 
 | Port | Service | Purpose | Security Measures |
@@ -33,7 +34,7 @@ sudo ss -tulnp
 systemctl list-units --type=service --state=running
 
 ![Service inventory](images/week7/service-inventory.png)
-*Figure 5: Active network services and running system services on the Ubuntu server,
+*Figure 6: Active network services and running system services on the Ubuntu server,
 used to identify exposed ports and justify required services.*
 
 | Service | Port | Why Needed | Security Measures |
@@ -52,13 +53,15 @@ HARDENING ACTIONS (based on Lynis warnings)
 Change 1: Automatic security updates enabled 
 Evidence before/after: unattended-upgrades service confirmed active
 
-![Unattended upgrades status](images/week7/unattended-upgrades-status.png)
-*Figure 4: Unattended upgrades service enabled and running on the Ubuntu server,
-demonstrating automated security patching as part of system hardening.*
-
+![Unattended upgrades enabled](images/week7/unattended-upgrades-status.png)
+*Figure 8: unattended-upgrades service active, enabling automatic installation of security updates.*
 
 Change 2: Firewall tightened to allow only required services (SSH, HTTP)
 Evidence before/after: UFW status showing restricted inbound rules
+
+![UFW status after hardening](images/week7/ufw-status.png)
+*Figure 5: UFW enabled with default deny incoming, allowing SSH only from 192.168.56.20 (Fedora workstation).*
+
 
 ═══════════════════════════════════════════════════════
 LYNIS AUDIT (After) + COMPARISON
@@ -68,7 +71,7 @@ grep 'Hardening index' ~/lynis-before.log
 grep 'Hardening index' ~/lynis-after.log
 
 ![Lynis audit after hardening](images/week7/final.png)
-*Figure 6: Lynis security audit after hardening actions were applied,
+*Figure 7: Lynis security audit after hardening actions were applied,
 showing the updated hardening index and improved security posture.*
 ═══════════════════════════════════════════════════════
 REMAINING RISKS + RATIONALE
