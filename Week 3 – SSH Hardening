@@ -23,7 +23,7 @@ sudo apt install -y stress-ng sysstat iotop iperf3 apache2 apache2-utils
 *Figure 1: Apache HTTP server active and running on ubuntu
 
 Fedora was used solely as the administrative workstation for remote monitoring and SSH access.
-All performance testing applications were installed and executed on the Ubuntu Server only.
+All my performance testing applications were installed and executed on the Ubuntu Server only.
 
 ═══════════════════════════════════════════════════════
 EXPECTED RESOURCE PROFILES (predictions before testing)
@@ -46,3 +46,7 @@ Evidence will be collected as terminal outputs and selective screenshots.
 
 ═══════════════════════════════════════════════════════
 
+My notes: I chose an application that represents different workload types 
+so that the testing in future weeks is not random. I installed everything on Ubuntu
+via SSH. I also wrote prediciotns for what resources each tool would stress, so that
+I can compare what i expected to happen with what actually happened
