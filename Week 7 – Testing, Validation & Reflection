@@ -81,3 +81,7 @@ The server operates in an isolated host-only lab network.
 TLS configuration is outside the scope of performance-focused testing
 and would add overhead that affects benchmark accuracy.
 ═══════════════════════════════════════════════════════
+
+My notes: I used Lynis and Nmap to auditL what I’d built rather than assuming it was secure.
+Nmap confirmed what was exposed on the host-only network, and Lynis gave me a measurable score to compare before/after hardening.
+I focused on fixing the warnings I could realistically address within the lab setup, and I recorded the remaining risks with a clear reason for accepting them.
