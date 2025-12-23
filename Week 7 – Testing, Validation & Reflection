@@ -3,39 +3,59 @@ Week 7 — Phase 7: Security Audit (Lynis + nmap) & System Evaluation
 LYNIS AUDIT (Before/After)
 sudo apt install lynis -y
 sudo lynis audit system
-# Save log:
 
 ![Lynis hardening index (before)](images/week7/lynis-index-before.png)
 *Figure 1: Lynis hardening index captured before applying final remediation steps (Hardening index: 65).*
 
 ![Lynis hardening index (after)](images/week7/lynis-index-after.png)
-*Figure 1: Lynis hardening index captured after applying remediation (Hardening index remained 65).*
+*Figure 2: Lynis hardening index captured after applying remediation (Hardening index remained 65).*
+
+The hardening index remained **65** after remediation. Even though the score did not increase, rerunning Lynis helped confirm controls were active (e.g., UFW restrictions) and supported my service exposure review with Nmap.
+
+LYNIS AUDIT (After) + COMPARISON
+sudo lynis audit system
+sudo grep -i "Hardening index" /var/log/lynis.log | tail -n 1
 
 ═══════════════════════════════════════════════════════
 NMAP SCAN (workstation -> server, host-only network only)
 sudo apt install nmap -y
 nmap 192.168.56.10
+
 ![Nmap basic scan](images/week7/nmap-basic-scan.png)
-*Figure 3: Basic Nmap scan of the Ubuntu server over the host-only network,
-showing only required ports exposed.*
+*Figure 3: Basic Nmap scan of the Ubuntu server over the host-only network, showing only required ports exposed.*
 
 nmap -sV 192.168.56.10
+
 ![Nmap service version scan](images/week7/nmap-service-scan.png)
-*Figure 4: Nmap service and version detection scan identifying SSH and Apache
-services running on the Ubuntu server.*
+*Figure 4: Nmap service and version detection scan identifying SSH and Apache services running on the Ubuntu server.*
 
 | Port | Service | Purpose | Security Measures |
 |----|----|----|----|
 | 22 | SSH | Remote administration | Key-based auth, UFW IP restriction, Fail2Ban |
 | 80 | HTTP | Apache web service | Local testing only, no external exposure |
+
+═══════════════════════════════════════════════════════
+HARDENING ACTIONS (based on Lynis warnings)
+
+Change 1: Automatic security updates enabled  
+Evidence: unattended-upgrades service confirmed active.
+
+![Unattended upgrades enabled](images/week7/unattended-upgrades-status.png)
+*Figure 5: unattended-upgrades service active, enabling automatic installation of security updates.*
+
+Change 2: Firewall tightened to allow only required services (SSH, HTTP)  
+Evidence: UFW status showing restricted inbound rules.
+
+![UFW status after hardening](images/week7/ufw-status.png)
+*Figure 6: UFW enabled with default deny incoming, allowing SSH only from 192.168.56.20 (Fedora workstation).*
+
 ═══════════════════════════════════════════════════════
 SERVICE INVENTORY + JUSTIFICATION
 sudo ss -tulnp
 systemctl list-units --type=service --state=running
 
 ![Service inventory](images/week7/service-inventory.png)
-*Figure 6: Active network services and running system services on the Ubuntu server,
-used to identify exposed ports and justify required services.*
+*Figure 7: Active network services and running system services on the Ubuntu server, used to identify exposed ports and justify required services.*
 
 | Service | Port | Why Needed | Security Measures |
 |------|------|-----------|------------------|
@@ -44,35 +64,8 @@ used to identify exposed ports and justify required services.*
 | systemd-resolved | — | DNS resolution | Local system service |
 | cron | — | Scheduled tasks | Restricted to system users |
 
-Only essential services are running on the Ubuntu server.
-Exposed network services are limited to SSH and HTTP, both of which are
-secured using firewall rules, authentication controls, and intrusion prevention.
+Only essential services are running on the Ubuntu server. Exposed network services are limited to SSH and HTTP, both of which are secured using firewall rules, authentication controls, and intrusion prevention.
 
-═══════════════════════════════════════════════════════
-HARDENING ACTIONS (based on Lynis warnings)
-Change 1: Automatic security updates enabled 
-Evidence before/after: unattended-upgrades service confirmed active
-
-![Unattended upgrades enabled](images/week7/unattended-upgrades-status.png)
-*Figure 8: unattended-upgrades service active, enabling automatic installation of security updates.*
-
-Change 2: Firewall tightened to allow only required services (SSH, HTTP)
-Evidence before/after: UFW status showing restricted inbound rules
-
-![UFW status after hardening](images/week7/ufw-status.png)
-*Figure 5: UFW enabled with default deny incoming, allowing SSH only from 192.168.56.20 (Fedora workstation).*
-
-
-═══════════════════════════════════════════════════════
-LYNIS AUDIT (After) + COMPARISON
-sudo lynis audit system
-sudo cp /var/log/lynis.log ~/lynis-after.log
-grep 'Hardening index' ~/lynis-before.log
-grep 'Hardening index' ~/lynis-after.log
-
-![Lynis audit after hardening](images/week7/final.png)
-*Figure 7: Lynis security audit after hardening actions were applied,
-showing the updated hardening index and improved security posture.*
 ═══════════════════════════════════════════════════════
 REMAINING RISKS + RATIONALE
 Risk 1: Apache HTTP service exposed on port 80
@@ -88,4 +81,3 @@ The server operates in an isolated host-only lab network.
 TLS configuration is outside the scope of performance-focused testing
 and would add overhead that affects benchmark accuracy.
 ═══════════════════════════════════════════════════════
-
