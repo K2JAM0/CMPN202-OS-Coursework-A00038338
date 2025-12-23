@@ -118,3 +118,8 @@ Security vs performance/usability trade-offs anticipated:
 - Restricting SSH to one IP improves security but reduces flexibility for admin access.
 - fail2ban/logging improves security visibility but adds small overhead (CPU/disk writes).
 - Stronger MAC enforcement improves containment but may require extra configuration to avoid blocking legitimate services.
+
+My notes: I planned a security and performance testing before doing the heavy 
+testing. I made a decision that everything should be administered via SSH so my
+evidence is inline with the brief. I wrote out the tools i would be using later 
+(CPU/memory/disk) and listed the security contorls.
