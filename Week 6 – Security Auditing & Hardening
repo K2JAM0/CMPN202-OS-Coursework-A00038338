@@ -220,8 +220,11 @@ VISUALISATIONS:
 
 ![iperf3 output evidence](images/week6/iperf3-proof.png)
 *Figure 12: Fedora client iperf3 output used to extract the throughput value for the chart.*
+═\══════════════════════════════════════════════════════
 
-
-
-═══════════════════════════════════════════════════════
+My notes: I collected real performance evidence in baseline vs under load vs 
+after changed. I came to realise that not every 'optimisation' improves 
+performance my Apache config change actually reduced Requests/sec, 
+so I documented it as a trade-off rather than pretending it was a win. I kept the same test parameters
+so the comparison is fair, and I used the results to explain what the OS was doing under load.
 
