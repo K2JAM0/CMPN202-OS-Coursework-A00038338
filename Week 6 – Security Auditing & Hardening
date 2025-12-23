@@ -112,7 +112,7 @@ showing CPU, memory, disk usage, network interfaces, and socket summary before a
 APPLICATION LOAD TESTING (Apache)
 
 ![Apache under load](images/week6/week6-apache-load.png)
-*Figure 5: Apache HTTP server under synthetic load using ApacheBench (ab),
+*Figure 8: Apache HTTP server under synthetic load using ApacheBench (ab),
 showing increased CPU utilisation and active connections compared to baseline idle state.*
 
 | Metric | Baseline | Under Load |
@@ -127,7 +127,7 @@ showing increased CPU utilisation and active connections compared to baseline id
 ═══════════════════════════════════════════════════════
 Optimisation #1: Apache MPM tuning (process/thread handling)
 
-As shown in Figure 5, Apache was subjected to a synthetic workload using
+As shown in Figure 8, Apache was subjected to a synthetic workload using
 ApacheBench with 1000 requests and a concurrency level of 50.
 These measurements represent the pre-optimisation baseline under load
 and are used as the reference point for the optimisation comparison below.
@@ -207,12 +207,20 @@ Network isolation improves security and predictability but prevents
 external client access without reconfiguration.
 
 ═══════════════════════════════════════════════════════
-VISUALISATIONS (textual summary)
+VISUALISATIONS:
 
-Performance comparisons are presented using benchmark outputs and
-tables rather than graphical charts. ApacheBench results, baseline
-metrics, disk throughput tests, and network benchmarks provide
-clear quantitative evidence for performance analysis and trade-offs. 
+![ApacheBench Requests/sec chart](images/week6/chart-apache-reqs.png)
+*Figure 9: ApacheBench Requests/sec (Before vs After) using the same test parameters.*
+
+![Disk throughput chart](images/week6/chart-disk-dd.png)
+*Figure 10: Disk write throughput measured with dd (direct write test).*
+
+![iperf3 host-only throughput chart](images/week6/chart-network-iperf.png)
+*Figure 11: iperf3 host-only throughput (Mbps). Value taken from the [SUM] receiver line.*
+
+![iperf3 output evidence](images/week6/iperf3-proof.png)
+*Figure 12: Fedora client iperf3 output used to extract the throughput value for the chart.*
+
 
 
 ═══════════════════════════════════════════════════════
