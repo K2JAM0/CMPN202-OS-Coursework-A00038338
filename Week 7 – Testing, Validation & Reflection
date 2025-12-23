@@ -4,34 +4,85 @@ LYNIS AUDIT (Before/After)
 sudo apt install lynis -y
 sudo lynis audit system
 # Save log:
+
+![Lynis audit before](images/week7/lynis-before.png)
+*Figure 1: Lynis security audit on Ubuntu Server before additional hardening, showing the initial hardening index.*
+
 sudo cp /var/log/lynis.log ~/lynis-before.log
 [SCREENSHOT: hardening index]
 ═══════════════════════════════════════════════════════
 NMAP SCAN (workstation -> server, host-only network only)
 sudo apt install nmap -y
 nmap 192.168.56.10
+![Nmap basic scan](images/week7/nmap-basic-scan.png)
+*Figure 2: Basic Nmap scan of the Ubuntu server over the host-only network,
+showing only required ports exposed.*
+
 nmap -sV 192.168.56.10
-[SCREENSHOTS + port inventory table]
+![Nmap service version scan](images/week7/nmap-service-scan.png)
+*Figure 3: Nmap service and version detection scan identifying SSH and Apache
+services running on the Ubuntu server.*
+
+| Port | Service | Purpose | Security Measures |
+|----|----|----|----|
+| 22 | SSH | Remote administration | Key-based auth, UFW IP restriction, Fail2Ban |
+| 80 | HTTP | Apache web service | Local testing only, no external exposure |
 ═══════════════════════════════════════════════════════
 SERVICE INVENTORY + JUSTIFICATION
 sudo ss -tulnp
 systemctl list-units --type=service --state=running
-[SCREENSHOT]
-Create table: service, port, why needed, security measures.
+
+![Service inventory](images/week7/service-inventory.png)
+*Figure 5: Active network services and running system services on the Ubuntu server,
+used to identify exposed ports and justify required services.*
+
+| Service | Port | Why Needed | Security Measures |
+|------|------|-----------|------------------|
+| sshd | 22 | Remote administration | Key-based auth, UFW IP restriction, Fail2Ban |
+| apache2 | 80 | Web server testing | Local-only access, firewall controlled |
+| systemd-resolved | — | DNS resolution | Local system service |
+| cron | — | Scheduled tasks | Restricted to system users |
+
+Only essential services are running on the Ubuntu server.
+Exposed network services are limited to SSH and HTTP, both of which are
+secured using firewall rules, authentication controls, and intrusion prevention.
+
 ═══════════════════════════════════════════════════════
 HARDENING ACTIONS (based on Lynis warnings)
-Change 1: ____________________ Evidence before/after: ____________________
-Change 2: ____________________ Evidence before/after: ____________________
+Change 1: Automatic security updates enabled 
+Evidence before/after: unattended-upgrades service confirmed active
+
+![Unattended upgrades status](images/week7/unattended-upgrades-status.png)
+*Figure 4: Unattended upgrades service enabled and running on the Ubuntu server,
+demonstrating automated security patching as part of system hardening.*
+
+
+Change 2: Firewall tightened to allow only required services (SSH, HTTP)
+Evidence before/after: UFW status showing restricted inbound rules
+
 ═══════════════════════════════════════════════════════
 LYNIS AUDIT (After) + COMPARISON
 sudo lynis audit system
 sudo cp /var/log/lynis.log ~/lynis-after.log
 grep 'Hardening index' ~/lynis-before.log
 grep 'Hardening index' ~/lynis-after.log
-[SCREENSHOT: improved score]
+
+![Lynis audit after hardening](images/week7/final.png)
+*Figure 6: Lynis security audit after hardening actions were applied,
+showing the updated hardening index and improved security posture.*
 ═══════════════════════════════════════════════════════
 REMAINING RISKS + RATIONALE
-Risk 1: ____________________  Why accepted: ____________________
-Risk 2: ____________________  Why accepted: ____________________
+Risk 1: Apache HTTP service exposed on port 80
+
+Why accepted:
+Apache is intentionally exposed for performance testing and benchmarking.
+Firewall rules restrict administrative access, and the service is monitored.
+
+Risk 2: No HTTPS (TLS) enabled
+
+Why accepted:
+The server operates in an isolated host-only lab network.
+TLS configuration is outside the scope of performance-focused testing
+and would add overhead that affects benchmark accuracy.
 ═══════════════════════════════════════════════════════
 
