@@ -4,9 +4,9 @@ PERFORMANCE TESTING PLAN (remote methodology)
 
 Planned data table (to fill in Week 6):
 Test Case | App/Workload | CPU % | RAM MB | Disk R/W | Net Mbps | Notes
-Baseline idle | N/A | | | | | |
-Under load | [app] | | | | | |
-After optimisation | [app] | | | | | |
+Baseline idle | N/A | 4.5% (95.5% idle) | 380.9 | dd write: 813 MB/s (1GiB direct write); root FS ~37% used | N/A | TCP: 9 total (ss -s); Mem total 1967.7 MiB; buff/cache 640.8 MiB
+Under load | ApacheBench (ab -n 1000 -c 50) | 4.3% (95.7% idle) | 370.8 | N/A (no disk R/W captured in this screenshot) | 413.0 | Requests/sec 4829.89; mean 10.352 ms; transfer 51624.18 KB/s ≈ 413.0 Mbps (localhost)
+After optimisation | Apache MPM tuning + iperf3 validation | N/A (not captured) | N/A (not captured) | N/A | 27400 | Apache after: Requests/sec 4370.44; mean 11.441 ms; transfer 46713.33 KB/s ≈ 373.7 Mbps. Network: iperf3 [SUM] receiver 27.4 Gbits/sec ≈ 27,400 Mbps
 
 
 Method:
